@@ -1,0 +1,8 @@
+{
+    "webPort": "3000",
+    "dbHost": "localhost",
+    "dbUser": "todolist_user",
+    "dbDatabase": "todolist",
+    "secretkey": "bananenZijnGezond",
+    "webpoort": 3000
+}

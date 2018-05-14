@@ -1,17 +1,19 @@
-// 
+//
 const http = require('http');
 const express = require('express');
-const routes_v1 = require('./api/authentication.api.js');
 const maaltijd = require('./api/maaltijd.api.js');
-const studentenhuis = require('./api/studentenhuis.api.js');
-const bodyParser = require('body-parser')
-const logger = require('morgan');
 
-const config = require('./config/config');
-const db = require('./config/db.improved');
+
+const bodyParser = require('body-parser');
+const ApiError = require('./model/ApiError');
+const authController = require('./controllers/authentication.controller');
+const auth_routes = require("./api/authentication.api");
+const port = process.env.PORT || 3000;
+
 const app = express();
 
-const port = process.env.PORT || config.webPort || 4001
+
+//Check van de Api key
 
 app.use(bodyParser.urlencoded({
     'extended': 'true'
@@ -21,22 +23,17 @@ app.use(bodyParser.json({
     type: 'application/vnd.api+json'
 })); // parse application/vnd.api+json as json
 
-app.use(logger('dev'));
 
-// Voeg ContentType toe aan alle responses (en ga door naar next route handler)
+app.use('/api', auth_routes);
+app.all('*', authController.validateToken);
+
+app.use('/api/studentenhuis', maaltijd);
+
+// Endpoints pakken die niet bestaan
 app.use('*', function (req, res, next) {
-    res.contentType('application/json');
-    console.log('contenttype toegevoegd.');
-    console.log('URL = ' + req.originalUrl);
-    next();
+    const error = new ApiError("Endpoint bestaan niet", 404);
+    next(error)
 });
-
-// Demo route handler - print logregel voor alle /api* endpoints.
-app.use('/api*', function (req, resp, next) {
-    console.log('/api aangeroepen');
-    next();
-});
-
 // Instantierr de api endpoint routes die we willen aanbieden
 // app.use('/api', routes_v1);
 app.use('/api/studentenhuis', maaltijd);
@@ -52,11 +49,11 @@ app.use('*', function (req, res, next) {
         .end();
 });
 
-// Error handler, handelt alle foutsituaties af waarbij error !== null
+
 app.use(function (error, req, res, next) {
     console.error(error.toString());
     let status = 500;
-    if (error.status !== undefined)
+    if (error instanceof ApiError && error.status !== undefined)
         status = error.status;
 
     res.status(status).json({
@@ -69,3 +66,4 @@ app.listen(port, function () {
 });
 
 module.exports = app;
+

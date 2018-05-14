@@ -3,6 +3,7 @@ const http = require('http');
 const express = require('express');
 const maaltijd = require('./api/maaltijd.api.js');
 
+
 const bodyParser = require('body-parser');
 const ApiError = require('./model/ApiError');
 const authController = require('./controllers/authentication.controller');
@@ -33,6 +34,10 @@ app.use('*', function (req, res, next) {
     const error = new ApiError("Endpoint bestaan niet", 404);
     next(error)
 });
+// Instantierr de api endpoint routes die we willen aanbieden
+// app.use('/api', routes_v1);
+app.use('/api/studentenhuis', maaltijd);
+app.use('/api/studentenhuis', studentenhuis);
 
 // Logregel, wordt getoond wanneer geen andere routes matchten
 // EN er geen foutsituatie is - anders wordt de error handler aangeroepen  

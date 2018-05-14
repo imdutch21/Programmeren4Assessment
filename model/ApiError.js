@@ -1,9 +1,10 @@
 class ApiError {
-    constructor(message, code){
+    constructor(code, message) {
         this.message = message;
         this.code = code;
         this.datetime = Date()
-    
+
     }
 }
+
 module.exports = ApiError;

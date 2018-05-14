@@ -1,15 +1,13 @@
 //
-// todos.api.js
-//TODO uncomment
-// var express = require('express');
-// var routes = express.Router();
+// Auth-routes
 //
-// module.exports = {}
-//
-// //
-// // andere benadering dan je tot nu toe zag - routes zijn gescheiden van de controllers;
-// // de controllers verzorgen de afhandeling.
-// //
-// routes.get('/status*', statusController.getStatus);
-//
-// module.exports = routes;
+
+let authcontroller = require('../controllers/authentication.controller');
+let express = require('express');
+let routes = express.Router();
+
+// endpoints Router
+
+routes.post('/login', authcontroller.login);
+routes.post('/register', authcontroller.register);
+module.exports = routes;

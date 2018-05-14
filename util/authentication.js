@@ -5,7 +5,7 @@
 
 //Het encode van een username naar een Token
 const settings = require('../config/config');
-const moment = requier('moment')
+const moment = require('moment');
 const jwt = require('jwt-simple');
 
 function encodeToken(username) {
@@ -13,7 +13,7 @@ function encodeToken(username) {
         exp: moment().add(10, 'days').unix(),
         iat: moment().unix(),
         sub: username
-    }
+    };
 
     return jwt.encode(playload, settings.secretkey)
 }
@@ -23,10 +23,10 @@ function encodeToken(username) {
 function decodeToken(token, callback){
 
     try {
-        const payload = jwt.decode(token,settings.secretkey)
+        const payload = jwt.decode(token,settings.secretkey);
 
         //Check of de Token niet verlopen is.
-        const now = moment().unix()
+        const now = moment().unix();
         if(now > payload.exp){
             callback('Token is verlopen.', null)
         } else {
@@ -40,4 +40,4 @@ function decodeToken(token, callback){
 module.exports ={ 
     encodeToken,
     decodeToken
-}
+};

@@ -1,6 +1,6 @@
 const auth = require("../util/authentication");
 const ApiError = require("../model/ApiError");
-const loginLijst = [];
+const db = require('../config/db.improved');
 module.exports = {
     validateToken(req, res ,next) {
         console.log("validatie token");
@@ -20,19 +20,39 @@ module.exports = {
     },
 
     login(req, res ,next) {
-        if(loginLijst[req.body.username] === req.body.password) {
-            res.status(200).json(auth.encodeToken(req.body.username)).end(); 
-        } else {
-            next();
-        }
-    },
-    register(req, res ,next) {
-        if(req.body !== undefined && loginLijst[req.body.username] === undefined){
-            loginLijst[req.body.username] = req.body.password;
-            let token = auth.encodeToken();
-            res.status(200).json({"token" :token}).end();
-        } else {
-            next(new ApiError("Username is al in gebruik", 401));
-        }
+        
+        
+        
+//     register(req, res ,next) {
+//         let body = req.body || '';
+
+//         if(body.voornaam === undefined || body.achternaam === undefined || body.email === undefined || body.password === undefined) {
+//             next(new Error(412, "Een of meer properties in de request body ontbreken of zijn foutief"))
+//         } else {
+//             db.querry("SELECT * FROM user WHERE =" + body.email , function (error, rows, fields ) {
+//                 if(error) {
+//                     next(error);
+//                 } else if (rows.length === 0) {
+//                     next(new Error(412, "Email does not exist"));
+//                 } else {
+//                     res.status(200).json({
+//                        status : {
+//                            query : 'OK'
+//                        }
+//                     })
+
+//                 }
+
+//             }
+//         }
+
+
+// //         if(
+// //             let token = auth.encodeToken();
+// //             res.status(200).json({"token" :token}).end();
+// //         } else {
+// //             next(new ApiError("Username is al in gebruik", 401));
+// //         }
+// //     }
     }
-};
+}

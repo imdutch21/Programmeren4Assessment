@@ -25,6 +25,25 @@ describe('Registration', () => {
         // module.exports = {
         //     token: validToken
         // }
+
+        chai.request(server)
+        .get('/api/register')
+        .send({
+            "firstname": "string",
+            "lastname": "string",
+            "email": "string",
+            "password": "string"
+        })
+        .end((err,res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('object');
+            let validToken = res.body.token
+
+
+            validToken.should.be.a('object')
+
+
+        });
         done()
     });
 
@@ -32,6 +51,13 @@ describe('Registration', () => {
         //
         // Hier schrijf je jouw testcase.
         //
+
+        chai.request(server)
+        .get('/api/register')
+        .end((err,res) =>{
+            res.should.have.status(404)
+
+        });
         done()
     });
 
@@ -39,6 +65,18 @@ describe('Registration', () => {
         //
         // Hier schrijf je jouw testcase.
         //
+        chai.request(server)
+        .get('/api/register')
+        .send({
+            "firstname": "string",
+            "lastname": "string",
+            "email": "string",
+            "password": "string"
+        })
+        .end((err,res) => {
+            res.should.have.status(404)
+
+        })
         done()
     });
 
@@ -46,6 +84,16 @@ describe('Registration', () => {
         //
         // Hier schrijf je jouw testcase.
         //
+        chai.request(server)
+        .get('/api/register')
+        .send({
+            "lastname": "string",
+            "email": "string",
+            "password": "string"
+        })
+        .end((err,res) => {
+            res.should.have.status(412)
+        });
         done()
     });
 
@@ -53,6 +101,18 @@ describe('Registration', () => {
         //
         // Hier schrijf je jouw testcase.
         //
+        chai.request(server)
+        .get('/api/register')
+        .send({
+            "firstname" : "a",
+            "lastname": "string",
+            "email": "string",
+            "password": "string"
+
+        })
+        .end((err,res) =>{
+            res.should.have.status(412)
+        })
         done()
     });
 
@@ -60,6 +120,16 @@ describe('Registration', () => {
         //
         // Hier schrijf je jouw testcase.
         //
+        chai.request(server)
+        .get('/api/register')
+        .send({
+            "firstname": "string",
+            "email": "string",
+            "password": "string"
+        })
+        .end((err,res) => {
+            res.should.have.status(404)
+        })
         done()
     });
 
@@ -67,6 +137,17 @@ describe('Registration', () => {
         //
         // Hier schrijf je jouw testcase.
         //
+        chai.request(server)
+        .get('/api/register')
+        .send({
+            "firstname": "string",
+            "lastname": "a",
+            "email": "string",
+            "password": "string"
+        })
+        .end((err,res) => {
+            res.should.have.status(412)
+        })
         done()
     });
 
@@ -74,6 +155,16 @@ describe('Registration', () => {
         //
         // Hier schrijf je jouw testcase.
         //
+        chai.request(server)
+            .get('/api/register')
+            .send({
+                "firstname": "string",
+                "lastname": "a",
+                "password": "string"
+            })
+            .end((err, res) => {
+                res.should.have.status(412)
+            })
         done()
     })
 
@@ -85,6 +176,20 @@ describe('Login', () => {
         //
         // Hier schrijf je jouw testcase.
         //
+        chai.request(server)
+            .get('/api/login')
+            .send({
+                "email": "string",
+                "password": "string"
+            })
+            .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                let validToken = res.body.token
+
+
+                validToken.should.be.a('object')
+
         done()
     });
 
@@ -92,6 +197,15 @@ describe('Login', () => {
         //
         // Hier schrijf je jouw testcase.
         //
+        chai.request(server)
+        .get('/api/login')
+        .send({
+            "email" : "ghdfsa",
+            "password" : "string"
+        })
+        .end((err,res) => {
+            res.should.have.status(412)
+        })
         done()
     });
 
@@ -99,6 +213,15 @@ describe('Login', () => {
         //
         // Hier schrijf je jouw testcase.
         //
+        chai.request(server)
+        .get('/api/login')
+        .send({
+            "email" : "string",
+            "password" : "thegsadffff"
+        })
+        .end((err,res) => {
+            res.should.have.status(412)
+        })
         done()
     });
 
@@ -106,7 +229,16 @@ describe('Login', () => {
         //
         // Hier schrijf je jouw testcase.
         //
+        chai.request(server)
+        .get('/api/login')
+        .send({
+            "email" : "string",
+            "password" : "string"
+        })
+        .end((err,res) => {
+            res.should.have.status(412)
+        })
         done()
     })
-
-});
+})
+})

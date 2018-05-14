@@ -3,7 +3,6 @@ const Error = require('../model/ApiError');
 module.exports = {
 
     getAll(req, res, next) {
-        let eroor = false;
         let id = req.params.number || '';
         if (id !== '') {
             db.query('SELECT * FROM studentenhuis WHERE ID = ' + id, function (error, rows, fields) {

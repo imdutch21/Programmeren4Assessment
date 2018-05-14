@@ -3,6 +3,7 @@ const http = require('http');
 const express = require('express');
 const routes_v1 = require('./api/authentication.api.js');
 const maaltijd = require('./api/maaltijd.api.js');
+const studentenhuis = require('./api/studentenhuis.api.js');
 const bodyParser = require('body-parser')
 const logger = require('morgan');
 
@@ -38,7 +39,8 @@ app.use('/api*', function (req, resp, next) {
 
 // Instantierr de api endpoint routes die we willen aanbieden
 // app.use('/api', routes_v1);
-app.use('/api/studentenhuis', maaltijd)
+app.use('/api/studentenhuis', maaltijd);
+app.use('/api/studentenhuis', studentenhuis);
 
 // Logregel, wordt getoond wanneer geen andere routes matchten
 // EN er geen foutsituatie is - anders wordt de error handler aangeroepen  

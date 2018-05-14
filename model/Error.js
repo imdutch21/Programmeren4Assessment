@@ -1,8 +1,8 @@
 class Error{
     constructor(code, description){
         this.description = description;
-        this.code = code;
-        this.datetime = Date()
+        this.status = code;
+        this.datetime = Date();
     }
 }
 

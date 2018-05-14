@@ -37,7 +37,7 @@ app.use('/api*', function (req, resp, next) {
 });
 
 // Instantierr de api endpoint routes die we willen aanbieden
-app.use('/api', routes_v1);
+// app.use('/api', routes_v1);
 app.use('/api/studentenhuis', maaltijd)
 
 // Logregel, wordt getoond wanneer geen andere routes matchten
@@ -53,7 +53,11 @@ app.use('*', function (req, res, next) {
 // Error handler, handelt alle foutsituaties af waarbij error !== null
 app.use(function (error, req, res, next) {
     console.error(error.toString());
-    res.status(500).json({
+    let status = 500;
+    if (error.status !== undefined)
+        status = error.status;
+
+    res.status(status).json({
         message: error
     }).end();
 });
@@ -61,3 +65,5 @@ app.use(function (error, req, res, next) {
 app.listen(port, function () {
     console.log('De server luistert op port ' + port); //log the actual active port, not some static number
 });
+
+module.exports = app;

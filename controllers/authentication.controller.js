@@ -14,8 +14,8 @@ module.exports = {
                 next(error);
             } else {
                 console.log("geauthenticeerd payload = ");
-                console.dir(payload);
                 req.user = payload.sub;
+                console.log(req.user);
                 next();
             }
         });
@@ -73,10 +73,12 @@ module.exports = {
                     if (error) {
                         next(error);
                     } else {
-                        db.query("SELECT * FROM user WHERE email = ?", [user.email], function (error, rows, fields) {
+                        db.query("SELECT id FROM user WHERE email = ?", [user.email], function (error, rows, fields) {
                             if (error) {
                                 next(error);
                             } else {
+                                console.dir(rows);
+                                console.dir(rows[0]);
                                 res.status(200).json({
                                     "token": auth.encodeToken(rows[0].id),
                                     "email": user.email

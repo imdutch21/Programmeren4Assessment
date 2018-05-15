@@ -12,7 +12,10 @@ const port = process.env.PORT || 3000;
 
 const app = express();
 
-
+const db = require('./config/db.improved');
+db.query("SELECT * FROM user", function (error, rows, fields) {
+    console.dir(rows);
+});
 app.use(bodyParser.urlencoded({
     'extended': 'true'
 })); // parse application/x-www-form-urlencoded

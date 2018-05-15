@@ -43,7 +43,7 @@ module.exports = {
     create(req, res, next) {
         let body = req.body || '';
         let userID = req.user || '';
-        console.dir(body);
+        console.log(req.user);
         let studentenhuis;
         try {
             assert(typeof(body) === "object", "Body is not defined");
@@ -55,7 +55,7 @@ module.exports = {
 
         let querry = 'INSERT INTO studentenhuis(Naam, Adres, UserID) VALUES (?)';
         let values = [studentenhuis.naam, studentenhuis.adres, userID];
-        db.query(querry, [values], function (error, rows, fields) {
+        let q = db.query(querry, [values], function (error, rows, fields) {
             if (error) {
                 next(error);
             } else {
@@ -73,6 +73,7 @@ module.exports = {
                 });
             }
         });
+        console.log(q.sql);
 
     },
 

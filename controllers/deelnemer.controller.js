@@ -45,7 +45,7 @@ module.exports = {
                         if (error) {
                             next(error);
                         } else {
-                            db.query("SELECT voornaam, email, achternaam FROM user WHERE userID = ?", [userID], function (error, rows, fields) {
+                            db.query("SELECT voornaam, email, achternaam FROM user WHERE ID = ?", [userID], function (error, rows, fields) {
                                 if (error) {
                                     next(error);
                                 } else {

@@ -5,6 +5,8 @@ const server = require('../server');
 chai.should();
 chai.use(chaiHttp);
 
+let deleteID;
+
 describe('Studentenhuis API POST', () => {
     it('should throw an error when using invalid JWT token', (done) => {
         chai.request(server)
@@ -37,6 +39,7 @@ describe('Studentenhuis API POST', () => {
                 response.should.have.property('adres').and.equals("help");
                 response.should.have.property('contact');
                 response.should.have.property('email');
+                deleteID = res.body.result.id;
 
                 done()
             });
@@ -210,10 +213,10 @@ describe('Studentenhuis API DELETE', () => {
     //will not always pass because the id will nog exist the secound time
     it('should succesfully delete an studentenhuis', (done) => {
         chai.request(server)
-            .delete('/api/studentenhuis/5')
+            .delete('/api/studentenhuis/' + deleteID)
             .set('x-access-token', "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcyNzIwNDUsImlhdCI6MTUyNjQwODA0NSwic3ViIjoxNn0.hKn_wi3VxqQSETt9QgCrGlJZUrxLjB7xKiwousHRRN4")
             .end((err, res) => {
-                // res.should.have.status(200); TODO put an existing studentenhuis id in the url
+                res.should.have.status(200);
 
                 done()
             });

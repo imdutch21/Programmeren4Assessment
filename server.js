@@ -37,7 +37,7 @@ app.use('/api/studentenhuis', maaltijd);
 app.use('/api/studentenhuis', studentenhuis);
 // Endpoints pakken die niet bestaan
 app.use('*', function (req, res, next) {
-    const error = new ApiError("Endpoint bestaan niet", 404);
+    const error = new ApiError(404, "Endpoint bestaan niet");
     next(error)
 });
 

@@ -17,7 +17,6 @@ describe('Studentenhuis API POST', () => {
             .end((err, res) => {
                 done()
             });
-        done()
     });
 
     it('should return a studentenhuis when posting a valid object', (done) => {
@@ -80,7 +79,6 @@ describe('Studentenhuis API GET all', () => {
             .end((err, res) => {
                 done()
             });
-        done()
     });
 
     it('should return all studentenhuizen when using a valid token', (done) => {
@@ -103,7 +101,6 @@ describe('Studentenhuis API GET one', () => {
             .end((err, res) => {
                 done()
             });
-        done()
     });
 
     it('should return the correct studentenhuis when using an existing huisId', (done) => {

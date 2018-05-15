@@ -7,6 +7,16 @@ chai.use(chaiHttp);
 
 describe('Studentenhuis API POST', () => {
     it('should throw an error when using invalid JWT token', (done) => {
+        chai.request(server)
+            .post('/api/studentenhuis')
+            .set('x-access-token', "eyJAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcxNzYwMjUsImlhdCI6MTUyNjMxMjAyNX0.EQzuGFndkcLuBj7JQ1JNubmSPpmlE-YwTTpCW5rQgDQ")
+            .send({
+                "naam": "string",
+                "adres": "help"
+            })
+            .end((err, res) => {
+                done()
+            });
         done()
     });
 
@@ -64,6 +74,12 @@ describe('Studentenhuis API POST', () => {
 
 describe('Studentenhuis API GET all', () => {
     it('should throw an error when using invalid JWT token', (done) => {
+        chai.request(server)
+            .get('/api/studentenhuis')
+            .set('x-access-token', "eyJAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcxNzYwMjUsImlhdCI6MTUyNjMxMjAyNX0.EQzuGFndkcLuBj7JQ1JNubmSPpmlE-YwTTpCW5rQgDQ")
+            .end((err, res) => {
+                done()
+            });
         done()
     });
 
@@ -81,9 +97,12 @@ describe('Studentenhuis API GET all', () => {
 
 describe('Studentenhuis API GET one', () => {
     it('should throw an error when using invalid JWT token', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
+        chai.request(server)
+            .get('/api/studentenhuis/1')
+            .set('x-access-token', "eyJAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcxNzYwMjUsImlhdCI6MTUyNjMxMjAyNX0.EQzuGFndkcLuBj7JQ1JNubmSPpmlE-YwTTpCW5rQgDQ")
+            .end((err, res) => {
+                done()
+            });
         done()
     });
 
@@ -113,7 +132,17 @@ describe('Studentenhuis API GET one', () => {
 
 describe('Studentenhuis API PUT', () => {
     it('should throw an error when using invalid JWT token', (done) => {
-        done();
+        chai.request(server)
+            .put('/api/studentenhuis')
+            .set('x-access-token', "eyJAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcxNzYwMjUsImlhdCI6MTUyNjMxMjAyNX0.EQzuGFndkcLuBj7JQ1JNubmSPpmlE-YwTTpCW5rQgDQ")
+            .send({
+                "naam": "string",
+                "adres": "help"
+            })
+            .end((err, res) => {
+                done()
+            });
+        done()
     });
 
     it('should return a studentenhuis with ID when posting a valid object', (done) => {
@@ -170,9 +199,16 @@ describe('Studentenhuis API PUT', () => {
 
 describe('Studentenhuis API DELETE', () => {
     it('should throw an error when using invalid JWT token', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
+        chai.request(server)
+            .delete('/api/studentenhuis')
+            .set('x-access-token', "eyJAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcxNzYwMjUsImlhdCI6MTUyNjMxMjAyNX0.EQzuGFndkcLuBj7JQ1JNubmSPpmlE-YwTTpCW5rQgDQ")
+            .send({
+                "naam": "string",
+                "adres": "help"
+            })
+            .end((err, res) => {
+                done()
+            });
         done()
     });
 

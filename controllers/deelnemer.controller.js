@@ -39,7 +39,7 @@ module.exports = {
                 if (error) {
                     next(error);
                 } else if (rows.length > 0) {
-                    next(new Error(409, "Conflict ( Gebruikers is al aangemeld"))
+                    next(new Error(409, "Conflict ( Deelnemer is al aangemeld"))
                 } else {
                     db.query("INSERT INTO deelnemers(userID, studentenhuisID, maaltijdID) VALUES(?)", [[userID, studentenhuisID, maaltijdID]], function (error, rows, fields) {
                         if (error) {

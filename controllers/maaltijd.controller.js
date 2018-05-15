@@ -69,7 +69,7 @@ module.exports = {
     create(req, res, next) {
         let houseId = req.params.number || '';
         let body = req.body || '';
-        let userID = req.user || '1';
+        let userID = req.user || '';
         let maaltijd;
         try {
             assert(typeof(body) === "object", "Body is not defined");
@@ -78,7 +78,7 @@ module.exports = {
             next(new Error(412, ex.toString()));
             return;
         }
-        if (houseId !== '' && body !== '') {
+        if (houseId !== '' && userID !== '' && body !== '') {
             db.query('SELECT * FROM studentenhuis WHERE ID = ' + houseId, function (error, rows, fields) {
                 if (error) {
                     next(error);
@@ -114,7 +114,7 @@ module.exports = {
 
     update(req, res, next) {
         let houseId = req.params.number || '';
-        let userID = req.user || '1';
+        let userID = req.user || '';
         let mealId = req.params.id || '';
         let body = req.body || '';
         let maaltijd;
@@ -125,7 +125,7 @@ module.exports = {
             next(new Error(412, ex.toString()));
             return;
         }
-        if (houseId !== '' && mealId !== '' && body !== '') {
+        if (houseId !== '' && mealId !== '' && body !== ''&& userID !== '') {
             db.query('SELECT * FROM studentenhuis WHERE ID = ' + houseId, function (error, rows, fields) {
                 if (error) {
                     next(error);
@@ -178,7 +178,7 @@ module.exports = {
     delete(req, res, next) {
         let houseId = req.params.number || '';
         let body = req.body || '';
-        let userID = req.user || '1';
+        let userID = req.user || '';
         let mealId = req.params.id || '';
 
 
@@ -190,7 +190,7 @@ module.exports = {
             next(new Error(412, ex.toString()));
             return;
         }
-        if (houseId !== '' && body !== '') {
+        if (houseId !== '' && body !== ''&& userID !== '') {
             db.query("SELECT * FROM maaltijd WHERE ID=" + mealId, function (error, rows, fields) {
                 if (error) {
                     next(error);

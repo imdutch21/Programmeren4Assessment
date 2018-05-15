@@ -39,7 +39,7 @@ module.exports = {
     },
     create(req, res, next) {
         let body = req.body || '';
-        let userID = req.user || '1';
+        let userID = req.user || '';
         console.dir(body);
         let studentenhuis;
         try {
@@ -75,7 +75,7 @@ module.exports = {
 
     update(req, res, next) {
         let body = req.body || '';
-        let userID = req.user || '1';
+        let userID = req.user || '';
         let houseId = req.params.number || '';
         let studentenhuis;
         try {
@@ -86,7 +86,7 @@ module.exports = {
             return;
         }
 
-        if (houseId !== '') {
+        if (houseId !== '' && userID !== '') {
             db.query("SELECT * FROM studentenhuis WHERE ID=" + houseId, function (error, rows, fields) {
                 if (error) {
                     next(error);
@@ -130,7 +130,7 @@ module.exports = {
 
     delete(req, res, next) {
         let houseId = req.params.number || '';
-        let userID = req.user || '1';
+        let userID = req.user || '';
         let body = req.body || '';
 
         let studentenhuis;
@@ -142,7 +142,7 @@ module.exports = {
             return;
         }
 
-        if (houseId !== '') {
+        if (houseId !== '' && userID !== '') {
             db.query("SELECT * FROM studentenhuis WHERE ID=" + houseId, function (error, rows, fields) {
                 if (error) {
                     next(error);

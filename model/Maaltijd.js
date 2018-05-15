@@ -1,4 +1,6 @@
-class Maalijd {
+const assert = require("assert");
+
+class Maaltijd {
     constructor(naam, beschrijving, ingredienten, allergie, prijs) {
         assert(typeof (naam) === 'string', "Naam is geen string");
         assert(typeof (beschrijving) === 'string', "Beschijving is geen string");
@@ -20,4 +22,4 @@ class Maalijd {
     }
 }
 
-module.exports = Studentenhuis;
+module.exports = Maaltijd;

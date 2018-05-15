@@ -1,8 +1,10 @@
 const db = require('../config/db.improved');
 const Error = require('../model/ApiError');
 const Studentenhuis = require('../model/Studentenhuis');
+const assert = require("assert");
 module.exports = {
     getAll(req, res, next) {
+        console.log("studentenhuis getAll");
         db.query('SELECT studentenhuis.id, studentenhuis.naam, studentenhuis.adres, user.voornaam as "contact", user.email FROM studentenhuis LEFT JOIN user ON user.ID = studentenhuis.UserID ', function (error, rows, fields) {
             if (error)
                 next(error);
@@ -14,12 +16,13 @@ module.exports = {
                     result: rows
                 }).end()
             }
-        })
+        });
     },
     getOneById(req, res, next) {
+        console.log("studentenhuis getOneById");
         let houseId = req.params.number || '';
         if (houseId !== '') {
-            db.query("SELECT studentenhuis.id, studentenhuis.naam, studentenhuis.adres, user.voornaam as 'contact', user.email FROM studentenhuis LEFT JOIN user ON user.ID = studentenhuis.UserID WHERE studentenhuis.id =" + houseId, function (error, rows, fields) {
+            db.query("SELECT studentenhuis.id, studentenhuis.naam, studentenhuis.adres, user.voornaam as 'contact', user.email FROM studentenhuis LEFT JOIN user ON user.ID = studentenhuis.UserID WHERE studentenhuis.id =?",[houseId], function (error, rows, fields) {
                 if (error)
                     next(error);
                 else if (rows.length > 0) {
@@ -56,7 +59,7 @@ module.exports = {
             if (error) {
                 next(error);
             } else {
-                db.query("SELECT studentenhuis.id, studentenhuis.naam, studentenhuis.adres, user.voornaam as 'contact', user.email FROM studentenhuis LEFT JOIN user ON user.ID = studentenhuis.UserID WHERE studentenhuis.id =  " + rows.insertId, function (error, rows, fields) {
+                db.query("SELECT studentenhuis.id, studentenhuis.naam, studentenhuis.adres, user.voornaam as 'contact', user.email FROM studentenhuis LEFT JOIN user ON user.ID = studentenhuis.UserID WHERE studentenhuis.id =  ?",[rows.insertId], function (error, rows, fields) {
                     if (error) {
                         next(error);
                     } else {
@@ -74,6 +77,7 @@ module.exports = {
     },
 
     update(req, res, next) {
+        console.log("studentenhuis update");
         let body = req.body || '';
         let userID = req.user || '';
         let houseId = req.params.number || '';
@@ -87,7 +91,7 @@ module.exports = {
         }
 
         if (houseId !== '' && userID !== '') {
-            db.query("SELECT * FROM studentenhuis WHERE ID=" + houseId, function (error, rows, fields) {
+            db.query("SELECT * FROM studentenhuis WHERE ID=?",[houseId], function (error, rows, fields) {
                 if (error) {
                     next(error);
                 } else if (rows.length === 0) {
@@ -105,7 +109,7 @@ module.exports = {
                                 if (error) {
                                     next(error);
                                 } else {
-                                    db.query("SELECT studentenhuis.id, studentenhuis.naam, studentenhuis.adres, user.voornaam as 'contact', user.email FROM studentenhuis LEFT JOIN user ON user.ID = studentenhuis.UserID WHERE studentenhuis.id =  " + houseId, function (error, rows, fields) {
+                                    db.query("SELECT studentenhuis.id, studentenhuis.naam, studentenhuis.adres, user.voornaam as 'contact', user.email FROM studentenhuis LEFT JOIN user ON user.ID = studentenhuis.UserID WHERE studentenhuis.id =  ?", [houseId], function (error, rows, fields) {
                                         if (error) {
                                             next(error);
                                         } else {
@@ -143,13 +147,13 @@ module.exports = {
         }
 
         if (houseId !== '' && userID !== '') {
-            db.query("SELECT * FROM studentenhuis WHERE ID=" + houseId, function (error, rows, fields) {
+            db.query("SELECT * FROM studentenhuis WHERE ID=?",[houseId], function (error, rows, fields) {
                 if (error) {
                     next(error);
                 } else if (rows.length === 0) {
                     next(new Error(404, "Niet gevonden (huisId bestaat niet)"))
                 } else {
-                    db.query("SELECT * FROM studentenhuis WHERE ID=" + houseId + " AND UserID = " + userID, function (error, rows, fields) {
+                    db.query("SELECT * FROM studentenhuis WHERE ID=? AND UserID = ?", [houseId, userID], function (error, rows, fields) {
                         if (error) {
                             next(error);
                         } else if (rows.length === 0) {

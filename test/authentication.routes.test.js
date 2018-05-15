@@ -20,7 +20,7 @@ describe('Registration', () => {
             .send({
                 "firstname": "bart",
                 "lastname": "klomp",
-                "email": "bartpklomp@hotmail.com",
+                "email": "bartpklomp@banaan.com",
                 "password": "banaan"
             })
             .end((err, res) => {
@@ -31,9 +31,8 @@ describe('Registration', () => {
 
                 validToken.should.be.a('string')
 
-
+                done()
             });
-        done()
     });
 
     it('should return an error on GET request', (done) => {
@@ -42,9 +41,8 @@ describe('Registration', () => {
             .get('/api/register')
             .end((err, res) => {
                 res.should.have.status(404)
-
+                done()
             });
-        done()
     });
 
     it('should throw an error when the user already exists', (done) => {
@@ -58,9 +56,8 @@ describe('Registration', () => {
             })
             .end((err, res) => {
                 res.should.have.status(401)
-
+                done()
             });
-        done()
     });
 
     it('should throw an error when no firstname is provided', (done) => {
@@ -73,8 +70,8 @@ describe('Registration', () => {
             })
             .end((err, res) => {
                 res.should.have.status(412)
+                done()
             });
-        done()
     });
 
     it('should throw an error when firstname is shorter than 2 chars', (done) => {
@@ -89,8 +86,8 @@ describe('Registration', () => {
             })
             .end((err, res) => {
                 res.should.have.status(412)
+                done()
             });
-        done()
     });
 
     it('should throw an error when no lastname is provided', (done) => {
@@ -103,8 +100,8 @@ describe('Registration', () => {
             })
             .end((err, res) => {
                 res.should.have.status(412)
+                done()
             });
-        done()
     });
 
     it('should throw an error when lastname is shorter than 2 chars', (done) => {
@@ -118,8 +115,8 @@ describe('Registration', () => {
             })
             .end((err, res) => {
                 res.should.have.status(412)
+                done()
             });
-        done()
     });
 
     it('should throw an error when email is invalid', (done) => {
@@ -132,8 +129,8 @@ describe('Registration', () => {
             })
             .end((err, res) => {
                 res.should.have.status(412)
+                done()
             });
-        done()
     })
 
 });
@@ -153,7 +150,7 @@ describe('Login', () => {
                 let validToken = res.body.token;
 
 
-                validToken.should.be.a('object');
+                validToken.should.be.a('string');
 
                 done()
             });
@@ -169,9 +166,10 @@ describe('Login', () => {
                 "password": "string"
             })
             .end((err, res) => {
-                res.should.have.status(412)
+                res.should.have.status(401)
+                done()
             });
-        done()
+
     });
 
     it('should throw an error when email exists but password is invalid', (done) => {
@@ -186,14 +184,11 @@ describe('Login', () => {
             })
             .end((err, res) => {
                 res.should.have.status(412)
+                done()
             });
-        done()
     });
 
     it('should throw an error when using an invalid email', (done) => {
-        //
-        // Hier schrijf je jouw testcase.
-        //
         chai.request(server)
             .post('/api/login')
             .send({
@@ -202,7 +197,7 @@ describe('Login', () => {
             })
             .end((err, res) => {
                 res.should.have.status(412)
+                done()
             });
-        done()
     })
 });

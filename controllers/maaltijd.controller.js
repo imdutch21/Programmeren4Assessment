@@ -1,18 +1,19 @@
 const db = require('../config/db.improved');
 const Error = require('../model/ApiError');
-const Studentenhuis = require('../model/Maaltijd');
+const Maaltijd = require('../model/Maaltijd');
+const assert = require("assert");
 module.exports = {
 
     getAll(req, res, next) {
         let id = req.params.number || '';
         if (id !== '') {
-            db.query('SELECT * FROM studentenhuis WHERE ID = ' + id, function (error, rows, fields) {
+            db.query('SELECT * FROM studentenhuis WHERE ID = ?',[id], function (error, rows, fields) {
                 if (error) {
                     next(error);
                 } else if (rows.length === 0) {
                     next(new Error(404, "Niet gevonden (huisId bestaat niet)"))
                 } else {
-                    db.query('SELECT * FROM maaltijd WHERE StudentenhuisID = ' + id, function (error, rows, fields) {
+                    db.query('SELECT ID,naam,beschrijving,ingredienten,allergie,prijs FROM maaltijd WHERE StudentenhuisID = ?', [id], function (error, rows, fields) {
                         if (error) {
                             next(error)
                         } else {
@@ -28,7 +29,7 @@ module.exports = {
             });
 
         } else {
-            next(new Error(404, "Niet gevonden (huisId bestaat niet)"))
+            next(new Error(404, "Niet gevonden (huisId niet gedefineerd)"))
         }
     },
 
@@ -43,7 +44,7 @@ module.exports = {
                 } else if (rows.length === 0) {
                     next(new Error(404, "Niet gevonden (huisId bestaat niet)"))
                 } else {
-                    db.query('SELECT * FROM maaltijd WHERE ID=' + mealId + ' AND StudentenhuisID = ' + houseId, function (error, rows, fields) {
+                    db.query('SELECT ID,naam,beschrijving,ingredienten,allergie,prijs FROM maaltijd WHERE ID=' + mealId + ' AND StudentenhuisID = ' + houseId, function (error, rows, fields) {
                         if (error) {
                             next(error);
                         } else {
@@ -70,6 +71,7 @@ module.exports = {
         let houseId = req.params.number || '';
         let body = req.body || '';
         let userID = req.user || '';
+        console.log(req.user);
         let maaltijd;
         try {
             assert(typeof(body) === "object", "Body is not defined");
@@ -79,7 +81,7 @@ module.exports = {
             return;
         }
         if (houseId !== '' && userID !== '' && body !== '') {
-            db.query('SELECT * FROM studentenhuis WHERE ID = ' + houseId, function (error, rows, fields) {
+            db.query('SELECT * FROM studentenhuis WHERE ID = ?', [houseId], function (error, rows, fields) {
                 if (error) {
                     next(error);
                 } else if (rows.length === 0) {
@@ -108,7 +110,7 @@ module.exports = {
                 }
             })
         } else {
-            next(new Error(404, "Niet gevonden (huisId bestaat niet)"));
+            next(new Error(404, "Niet gevonden (huisId niet gedefineerd)"));
         }
     },
 
@@ -181,15 +183,6 @@ module.exports = {
         let userID = req.user || '';
         let mealId = req.params.id || '';
 
-
-        let maaltijd;
-        try {
-            assert(typeof(body) === "object", "Body is not defined");
-            maaltijd = new Maaltijd(body.naam, body.beschrijving, body.ingredienten, body.allergie, body.prijs);
-        } catch (ex) {
-            next(new Error(412, ex.toString()));
-            return;
-        }
         if (houseId !== '' && body !== ''&& userID !== '') {
             db.query("SELECT * FROM maaltijd WHERE ID=" + mealId, function (error, rows, fields) {
                 if (error) {

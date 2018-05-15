@@ -34,7 +34,6 @@ app.use('/api', auth_routes);
 app.all('/api/studentenhuis*', authController.validateToken);
 
 app.use('/api/studentenhuis', maaltijd);
-
 app.use('/api/studentenhuis', studentenhuis);
 // Endpoints pakken die niet bestaan
 app.use('*', function (req, res, next) {
@@ -44,7 +43,7 @@ app.use('*', function (req, res, next) {
 
 
 app.use(function (error, req, res, next) {
-    console.error(error.toString());
+    console.dir(error);
     let status = 500;
     if (error instanceof ApiError && error.code !== undefined)
         status = error.code;

@@ -2,11 +2,13 @@ const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0
 const assert = require("assert");
 const config = require('../config/config.json');
 const secret = process.env.SECRETKEY || config.secretkey;
-class User {
+
+class UserRegister {
+
     constructor(firstname, lastname, email, password) {
         assert(typeof (firstname) === 'string', "Voornaam is geen string");
         assert(typeof (lastname) === 'string', "Achternaam is geen string");
-        assert(typeof (email) === 'string', "Email is geen string");
+        assert(typeof (email) === 'string', "Email is geen string it's a " + typeof (email));
         assert(typeof (password) === 'string', "password is geen string");
 
 
@@ -16,9 +18,25 @@ class User {
         assert(password.trim().length > 2, "Wachtwoord moet langer zijn dan twee characters");
 
         assert(password.trim().length > 2, "Wachtwoord moet langer zijn dan twee characters");
-        assert(re.test(email.toLowerCase()), "Email voldoet niet aan de eisen");
+        assert(email.toLowerCase().match(re), "Email voldoet niet aan de eisen");
         this.firstname = firstname;
         this.lastname = lastname;
+        this.email = email;
+        this.password = hash(password);
+    }
+}
+
+class UserLogin {
+
+    constructor(email, password) {
+        assert(typeof (email) === 'string', "Email is geen string it's a " + typeof (email));
+        assert(typeof (password) === 'string', "password is geen string");
+
+        assert(email.trim().length > 6, "Email moet langer zijn dan zes characters");
+        assert(password.trim().length > 2, "Wachtwoord moet langer zijn dan twee characters");
+
+        assert(password.trim().length > 2, "Wachtwoord moet langer zijn dan twee characters");
+        assert(re.test(email.toLowerCase()), "Email voldoet niet aan de eisen");
         this.email = email;
         this.password = hash(password);
     }
@@ -33,4 +51,4 @@ function hash(string) {
 
 }
 
-module.exports = User;
+module.exports = {UserRegister, UserLogin};

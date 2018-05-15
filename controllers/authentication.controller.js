@@ -2,7 +2,7 @@ const auth = require("../util/authentication");
 const Error = require("../model/ApiError");
 const db = require('../config/db.improved');
 const assert = require("assert");
-const User = require("../model/User")
+const User = require("../model/User");
 
 module.exports = {
     validateToken(req, res, next) {
@@ -25,13 +25,14 @@ module.exports = {
         let user;
         let body = req.body || '';
         try {
+            console.log(body.email);
             assert(typeof(body) === "object", "Body is not defined");
-            user = new User(body.firstname, body.lastname, body.email, body.password);
+            user = new User.UserLogin(body.email, body.password);
         } catch (ex) {
             next(new Error(412, ex.toString()));
             return;
         }
-        let query = ("SELECT* FROM user WHERE email = ? AND password = ?");
+        let query = ("SELECT id FROM user WHERE email = ? AND password = ?");
         let values = [user.email, user.password];
         db.query(query, values, function (error, rows, fields) {
             if (error) {
@@ -48,12 +49,13 @@ module.exports = {
     },
 
     register(req, res, next) {
+        console.log("register")
         let body = req.body || '';
 
         let user;
         try {
             assert(typeof(body) === "object", "Body is not defined");
-            user = new User(body.firstname, body.lastname, body.email, body.password);
+            user = new User.UserRegister(body.firstname, body.lastname, body.email, body.password);
         } catch (ex) {
             next(new Error(412, ex.toString()));
             return;

@@ -80,7 +80,11 @@ module.exports = {
                         if (error) {
                             next(error)
                         } else {
-                            res.status(200).end();
+                            res.status(200).json({
+                                status: {
+                                    query: 'OK'
+                                }
+                            }).end();
                         }
                     })
                 }

@@ -1,9 +1,9 @@
 const db = require('../config/db.improved');
 const Error = require('../model/ApiError');
+const Studentenhuis = require('../model/Maaltijd');
 module.exports = {
 
     getAll(req, res, next) {
-        let eroor = false;
         let id = req.params.number || '';
         if (id !== '') {
             db.query('SELECT * FROM studentenhuis WHERE ID = ' + id, function (error, rows, fields) {
@@ -70,10 +70,15 @@ module.exports = {
         let houseId = req.params.number || '';
         let body = req.body || '';
         let userID = req.user || '1';
-
-        if (body.naam === undefined || body.beschrijving === undefined || body.ingredienten === undefined || body.allergie === undefined || body.prijs === undefined || userID === undefined || houseId === undefined) {
-            next(new Error(412, "Een of meer properties in de request body ontbreken of zijn foutief"))
-        } else if (houseId !== '' && body !== '') {
+        let maaltijd;
+        try {
+            assert(typeof(body) === "object", "Body is not defined");
+            maaltijd = new Maaltijd(body.naam, body.beschrijving, body.ingredienten, body.allergie, body.prijs);
+        } catch (ex) {
+            next(new Error(412, ex.toString()));
+            return;
+        }
+        if (houseId !== '' && body !== '') {
             db.query('SELECT * FROM studentenhuis WHERE ID = ' + houseId, function (error, rows, fields) {
                 if (error) {
                     next(error);
@@ -112,9 +117,15 @@ module.exports = {
         let userID = req.user || '1';
         let mealId = req.params.id || '';
         let body = req.body || '';
-        if (body.naam === undefined || body.beschrijving === undefined || body.ingredienten === undefined || body.allergie === undefined || body.prijs === undefined) {
-            next(new Error(412, "Een of meer properties in de request body ontbreken of zijn foutief"))
-        } else if (houseId !== '' && mealId !== '' && body !== '') {
+        let maaltijd;
+        try {
+            assert(typeof(body) === "object", "Body is not defined");
+            maaltijd = new Maaltijd(body.naam, body.beschrijving, body.ingredienten, body.allergie, body.prijs);
+        } catch (ex) {
+            next(new Error(412, ex.toString()));
+            return;
+        }
+        if (houseId !== '' && mealId !== '' && body !== '') {
             db.query('SELECT * FROM studentenhuis WHERE ID = ' + houseId, function (error, rows, fields) {
                 if (error) {
                     next(error);
@@ -170,9 +181,16 @@ module.exports = {
         let userID = req.user || '1';
         let mealId = req.params.id || '';
 
-        if (body.naam === undefined || body.beschrijving === undefined || body.ingredienten === undefined || body.allergie === undefined || body.prijs === undefined || userID === undefined || houseId === undefined) {
-            next(new Error(412, "Een of meer properties in de request body ontbreken of zijn foutief"))
-        } else if (houseId !== '' && body !== '') {
+
+        let maaltijd;
+        try {
+            assert(typeof(body) === "object", "Body is not defined");
+            maaltijd = new Maaltijd(body.naam, body.beschrijving, body.ingredienten, body.allergie, body.prijs);
+        } catch (ex) {
+            next(new Error(412, ex.toString()));
+            return;
+        }
+        if (houseId !== '' && body !== '') {
             db.query("SELECT * FROM maaltijd WHERE ID=" + mealId, function (error, rows, fields) {
                 if (error) {
                     next(error);

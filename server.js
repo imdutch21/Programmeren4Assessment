@@ -24,20 +24,13 @@ app.use(bodyParser.json({
 
 
 app.use('/api', auth_routes);
-app.all('*', authController.validateToken);
+app.all('/api/studentenhuis*', authController.validateToken);
 
 app.use('/api/studentenhuis', maaltijd);
 
-// Endpoints pakken die niet bestaan
-app.use('*', function (req, res, next) {
-    const error = new ApiError("Endpoint bestaan niet", 404);
-    next(error)
-});
 
-// Logregel, wordt getoond wanneer geen andere routes matchten
-// EN er geen foutsituatie is - anders wordt de error handler aangeroepen  
 app.use('*', function (req, res, next) {
-    res.status(404) //return 404 for a 404 route, not 200!
+    res.status(404)
         .json({
             message: 'Geen enkele endpoint matcht!'
         })
@@ -48,9 +41,10 @@ app.use('*', function (req, res, next) {
 app.use(function (error, req, res, next) {
     console.error(error.toString());
     let status = 500;
-    if (error instanceof ApiError && error.status !== undefined)
-        status = error.status;
-
+    if (error instanceof ApiError && error.code !== undefined)
+        status = error.code;
+    console.dir(error);
+    console.log('STATUS: ' + status);
     res.status(status).json({
         message: error
     }).end();

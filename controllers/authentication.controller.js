@@ -20,39 +20,44 @@ module.exports = {
     },
 
     login(req, res ,next) {
+        if(req.body.email === res.body.email && req.body.password === res.body.password){
+            
+            res.status(200).json(auth.encodeToken(req.body.user)).end();
+        } else {
+            next();
+        }
+
         
         
         
-//     register(req, res ,next) {
-//         let body = req.body || '';
+    register(req, res ,next) {
+        let body = req.body || '',
 
-//         if(body.voornaam === undefined || body.achternaam === undefined || body.email === undefined || body.password === undefined) {
-//             next(new Error(412, "Een of meer properties in de request body ontbreken of zijn foutief"))
-//         } else {
-//             db.querry("SELECT * FROM user WHERE =" + body.email , function (error, rows, fields ) {
-//                 if(error) {
-//                     next(error);
-//                 } else if (rows.length === 0) {
-//                     next(new Error(412, "Email does not exist"));
-//                 } else {
-//                     res.status(200).json({
-//                        status : {
-//                            query : 'OK'
-//                        }
-//                     })
+        if(body.voornaam === undefined || body.achternaam === undefined || body.email === undefined || body.password === undefined) {
+            next(new Error(412, "Een of meer properties in de request body ontbreken of zijn foutief"))
+        } else {
+           let querry = ("INSERT INTO user(ID, Voornaam, Achternaam, Email, Password) VALUES(?) ")
+            let values = [body.voornaam, body.achternaam, body.email, body.password, userID];
+            db.query(querry, [values], function (error, rows, fields) {
+              if(error){
+                  next(error);
+              } else {
+                    db.querry("SELECT * FROM user WHERE =" + body.email , function (error, rows, fields ) {
+                if(error) {
+                    next(error);
+                } else if (rows.length === 0) {
+                    next(new Error(412, "Email does not exist"));
+                } else {
+                    res.status(200).json({
+                       status : {
+                           query : 'OK'
+                       },
+                       result: rows
+                    })
 
-//                 }
-
-//             }
-//         }
-
-
-// //         if(
-// //             let token = auth.encodeToken();
-// //             res.status(200).json({"token" :token}).end();
-// //         } else {
-// //             next(new ApiError("Username is al in gebruik", 401));
-// //         }
-// //     }
+                }
+            }
+        }
     }
+}
 }

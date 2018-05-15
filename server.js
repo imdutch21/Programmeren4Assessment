@@ -1,7 +1,8 @@
 //
 const express = require('express');
-const maaltijd = require('./api/maaltijd.api.js');
-const studentenhuis = require('./api/studentenhuis.api.js');
+const maaltijd = require('./api/maaltijd.api');
+const studentenhuis = require('./api/studentenhuis.api');
+const deelnemer = require('./api/deelnemer.api');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const ApiError = require('./model/ApiError');
@@ -35,9 +36,10 @@ app.all('*', authController.validateToken);
 
 app.use('/api/studentenhuis', maaltijd);
 app.use('/api/studentenhuis', studentenhuis);
+app.use('/api/studentenhuis', deelnemer);
 // Endpoints pakken die niet bestaan
 app.use('*', function (req, res, next) {
-    const error = new ApiError("Endpoint bestaan niet", 404);
+    const error = new ApiError(404, "Endpoint bestaan niet");
     next(error)
 });
 

@@ -138,14 +138,6 @@ module.exports = {
         let userID = req.user || '';
         let body = req.body || '';
 
-        let studentenhuis;
-        try {
-            assert(typeof(body) === "object", "Body is not defined");
-            studentenhuis = new Studentenhuis(body.naam, body.adres);
-        } catch (ex) {
-            next(new Error(412, ex.toString()));
-            return;
-        }
 
         if (houseId !== '' && userID !== '') {
             db.query("SELECT * FROM studentenhuis WHERE ID=?",[houseId], function (error, rows, fields) {
@@ -160,17 +152,23 @@ module.exports = {
                         } else if (rows.length === 0) {
                             next(new Error(409, "Conflict (Gebruiker mag deze data niet wijzigen)"));
                         } else {
-                            res.status(200).json({
-                                status: {
-                                    query: 'OK'
+                            db.query("DELETE FROM studentenhuis WHERE ID=? AND UserID = ?", [houseId, userID], function (error, rows, fields) {
+                                if (error){
+                                    next(error)
+                                } else {
+                                    res.status(200).json({
+                                        status: {
+                                            query: 'OK'
+                                        }
+                                    }).end();
                                 }
-                            }).end();
+                            });
                         }
                     });
                 }
             });
         } else {
-            next(new Error(404, "Niet gevonden (huisId bestaat niet)"));
+            next(new Error(404, "Niet gevonden (huisId niet gedefineerd)"));
         }
     }
 

@@ -5,13 +5,13 @@ const server = require('../server');
 chai.should();
 chai.use(chaiHttp);
 
-let deleteID;
 
+let token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcyNzIwNDUsImlhdCI6MTUyNjQwODA0NSwic3ViIjoxNn0.hKn_wi3VxqQSETt9QgCrGlJZUrxLjB7xKiwousHRRN4";
 describe('Studentenhuis API POST', () => {
     it('should throw an error when using invalid JWT token', (done) => {
         chai.request(server)
             .post('/api/studentenhuis')
-            .set('x-access-token', "eyJAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcxNzYwMjUsImlhdCI6MTUyNjMxMjAyNX0.EQzuGFndkcLuBj7JQ1JNubmSPpmlE-YwTTpCW5rQgDQ")
+            .set('x-access-token', token)
             .send({
                 "naam": "string",
                 "adres": "help"
@@ -24,7 +24,7 @@ describe('Studentenhuis API POST', () => {
     it('should return a studentenhuis when posting a valid object', (done) => {
         chai.request(server)
             .post('/api/studentenhuis')
-            .set('x-access-token', "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcyNzIwNDUsImlhdCI6MTUyNjQwODA0NSwic3ViIjoxNn0.hKn_wi3VxqQSETt9QgCrGlJZUrxLjB7xKiwousHRRN4")
+            .set('x-access-token', token)
             .send({
                 "naam": "string",
                 "adres": "help"
@@ -51,7 +51,7 @@ describe('Studentenhuis API POST', () => {
             .send({
                 "adres": "help"
             })
-            .set('x-access-token', "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcyNzIwNDUsImlhdCI6MTUyNjQwODA0NSwic3ViIjoxNn0.hKn_wi3VxqQSETt9QgCrGlJZUrxLjB7xKiwousHRRN4")
+            .set('x-access-token', token)
             .end((err, res) => {
                 res.should.have.status(412);
 
@@ -62,7 +62,7 @@ describe('Studentenhuis API POST', () => {
     it('should throw an error when adres is missing', (done) => {
         chai.request(server)
             .post('/api/studentenhuis')
-            .set('x-access-token', "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcyNzIwNDUsImlhdCI6MTUyNjQwODA0NSwic3ViIjoxNn0.hKn_wi3VxqQSETt9QgCrGlJZUrxLjB7xKiwousHRRN4")
+            .set('x-access-token', token)
             .send({
                 "naam": "help"
             })
@@ -87,7 +87,7 @@ describe('Studentenhuis API GET all', () => {
     it('should return all studentenhuizen when using a valid token', (done) => {
         chai.request(server)
             .get('/api/studentenhuis')
-            .set('x-access-token', "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcyNzIwNDUsImlhdCI6MTUyNjQwODA0NSwic3ViIjoxNn0.hKn_wi3VxqQSETt9QgCrGlJZUrxLjB7xKiwousHRRN4")
+            .set('x-access-token', token)
             .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
@@ -109,7 +109,7 @@ describe('Studentenhuis API GET one', () => {
     it('should return the correct studentenhuis when using an existing huisId', (done) => {
         chai.request(server)
             .get('/api/studentenhuis/1')
-            .set('x-access-token', "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcyNzIwNDUsImlhdCI6MTUyNjQwODA0NSwic3ViIjoxNn0.hKn_wi3VxqQSETt9QgCrGlJZUrxLjB7xKiwousHRRN4")
+            .set('x-access-token', token)
             .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
@@ -122,7 +122,7 @@ describe('Studentenhuis API GET one', () => {
     it('should return an error when using an non-existing huisId', (done) => {
         chai.request(server)
             .get('/api/studentenhuis/600000')
-            .set('x-access-token', "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcyNzIwNDUsImlhdCI6MTUyNjQwODA0NSwic3ViIjoxNn0.hKn_wi3VxqQSETt9QgCrGlJZUrxLjB7xKiwousHRRN4")
+            .set('x-access-token', token)
             .end((err, res) => {
                 res.should.have.status(404);
                 done()
@@ -147,7 +147,7 @@ describe('Studentenhuis API PUT', () => {
     it('should return a studentenhuis with ID when posting a valid object', (done) => {
         chai.request(server)
             .put('/api/studentenhuis/1')
-            .set('x-access-token', "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcyNzIwNDUsImlhdCI6MTUyNjQwODA0NSwic3ViIjoxNn0.hKn_wi3VxqQSETt9QgCrGlJZUrxLjB7xKiwousHRRN4")
+            .set('x-access-token', token)
             .send({
                 "naam": "string",
                 "adres": "help"
@@ -170,7 +170,7 @@ describe('Studentenhuis API PUT', () => {
     it('should throw an error when naam is missing', (done) => {
         chai.request(server)
             .put('/api/studentenhuis/1')
-            .set('x-access-token', "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcyNzIwNDUsImlhdCI6MTUyNjQwODA0NSwic3ViIjoxNn0.hKn_wi3VxqQSETt9QgCrGlJZUrxLjB7xKiwousHRRN4")
+            .set('x-access-token', token)
             .send({
                 "adres": "help"
             })
@@ -184,7 +184,7 @@ describe('Studentenhuis API PUT', () => {
     it('should throw an error when adres is missing', (done) => {
         chai.request(server)
             .put('/api/studentenhuis/1')
-            .set('x-access-token', "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcyNzIwNDUsImlhdCI6MTUyNjQwODA0NSwic3ViIjoxNn0.hKn_wi3VxqQSETt9QgCrGlJZUrxLjB7xKiwousHRRN4")
+            .set('x-access-token', token)
             .send({
                 "naam": "string"
             })
@@ -199,7 +199,7 @@ describe('Studentenhuis API PUT', () => {
 describe('Studentenhuis API DELETE', () => {
     it('should throw an error when using invalid JWT token', (done) => {
         chai.request(server)
-            .delete('/api/studentenhuis')
+            .delete('/api/studentenhuis/5')
             .set('x-access-token', "eyJAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcxNzYwMjUsImlhdCI6MTUyNjMxMjAyNX0.EQzuGFndkcLuBj7JQ1JNubmSPpmlE-YwTTpCW5rQgDQ")
             .send({
                 "naam": "string",
@@ -213,10 +213,10 @@ describe('Studentenhuis API DELETE', () => {
     //will not always pass because the id will nog exist the secound time
     it('should succesfully delete an studentenhuis', (done) => {
         chai.request(server)
-            .delete('/api/studentenhuis/' + deleteID)
-            .set('x-access-token', "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MjcyNzIwNDUsImlhdCI6MTUyNjQwODA0NSwic3ViIjoxNn0.hKn_wi3VxqQSETt9QgCrGlJZUrxLjB7xKiwousHRRN4")
+            .delete('/api/studentenhuis/55')
+            .set('x-access-token', token)
             .end((err, res) => {
-                res.should.have.status(200);
+                res.should.have.status(200); //TODO give numbers that match an existing entry
 
                 done()
             });

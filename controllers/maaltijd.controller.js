@@ -93,7 +93,7 @@ module.exports = {
                         if (error) {
                             next(error);
                         } else {
-                            db.query("SELECT * FROM maaltijd WHERE id = " + rows.insertId, function (error, rows, fields) {
+                            db.query("SELECT ID,naam,beschrijving,ingredienten,allergie,prijs FROM maaltijd WHERE id = " + rows.insertId, function (error, rows, fields) {
                                 if (error) {
                                     next(error);
                                 } else {
@@ -140,7 +140,7 @@ module.exports = {
                         } else if (rows.length === 0) {
                             next(new Error(404, "Niet gevonden (huisId of maaltijdId bestaat niet)"))
                         } else {
-                            db.query("SELECT * FROM maaltijd WHERE ID=" + mealId + " AND UserID = " + userID, function (error, rows, fields) {
+                            db.query("SELECT ID,naam,beschrijving,ingredienten,allergie,prijs FROM maaltijd WHERE ID=" + mealId + " AND UserID = " + userID, function (error, rows, fields) {
                                 if (error) {
                                     next(error);
                                 } else if (rows.length === 0) {

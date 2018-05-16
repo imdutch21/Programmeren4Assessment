@@ -7,7 +7,7 @@ module.exports = {
     getAll(req, res, next) {
         let id = req.params.number || '';
         if (id !== '') {
-            db.query('SELECT * FROM studentenhuis WHERE ID = ?',[id], function (error, rows, fields) {
+            db.query('SELECT * FROM studentenhuis WHERE ID = ?', [id], function (error, rows, fields) {
                 if (error) {
                     next(error);
                 } else if (rows.length === 0) {
@@ -127,7 +127,7 @@ module.exports = {
             next(new Error(412, ex.toString()));
             return;
         }
-        if (houseId !== '' && mealId !== '' && body !== ''&& userID !== '') {
+        if (houseId !== '' && mealId !== '' && body !== '' && userID !== '') {
             db.query('SELECT * FROM studentenhuis WHERE ID = ' + houseId, function (error, rows, fields) {
                 if (error) {
                     next(error);
@@ -183,24 +183,30 @@ module.exports = {
         let userID = req.user || '';
         let mealId = req.params.id || '';
 
-        if (houseId !== '' && body !== ''&& userID !== '') {
-            db.query("SELECT * FROM maaltijd WHERE ID=" + mealId, function (error, rows, fields) {
+        if (houseId !== '' && body !== '' && userID !== '') {
+            db.query("SELECT * FROM maaltijd WHERE ID= ? ", [mealId], function (error, rows, fields) {
                 if (error) {
                     next(error);
                 } else if (rows.length === 0) {
                     next(new Error(404, "Niet gevonden (huisId of maaltijdId bestaat niet)"))
                 } else {
-                    db.query("SELECT * FROM maaltijd WHERE ID=" + mealId + " AND UserID = " + userID, function (error, rows, fields) {
+                    db.query("SELECT * FROM maaltijd WHERE ID= ? AND UserID = ?", [mealId, userID], function (error, rows, fields) {
                         if (error) {
                             next(error);
                         } else if (rows.length === 0) {
                             next(new Error(409, "Conflict (Gebruiker mag deze data niet wijzigen)"));
                         } else {
-                            res.status(200).json({
-                                status: {
-                                    query: 'OK'
+                            db.query("DELETE FROM maaltijd  WHERE ID= ? AND UserID = ?", [mealId, userID], function (error, rows, fields) {
+                                if (error) {
+                                    next(error);
+                                } else {
+                                    res.status(200).json({
+                                        status: {
+                                            query: 'OK'
+                                        }
+                                    }).end();
                                 }
-                            }).end();
+                            });
                         }
                     });
                 }
